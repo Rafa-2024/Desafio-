@@ -1,18 +1,19 @@
-@All
-Feature: Menu de navegação da página principal do site da Amazon
+@All3
+Feature: Menu de navegação
+  da página principal do site da Amazon
 
   Background: Acessar o site da Amazon
     Given o site "https://www.amazon.com.br" foi acessado
 
-    Scenario Outline: Validar que a página "<link>" é aberta ao clicar na opção correspondente
-      When clicar em "<link>"
-      Then validar que a página "<link>"
-      Examples:
-        | link           |
-        | Mais vendidos  |
-        | Prime          |
-        | Mais vendidos  |
+  @teste1
+  Scenario: Desativar captcha
+    When teste
 
-    Scenario: Validar que o menu de opções é aberto quando a opção "Todos" é clicada no menu de navegação
-      When clicar em "Todos"
-      Then validar que a palavra "Destaque" está vísivel na lista do menu 'Todos'
+    Scenario Outline: Validar que a página "<link>" é aberta ao clicar na opção correspondente
+      When clicar em link "<link>"
+      Then validar que a página "<title>" carregou corretamente
+      Examples:
+        | link            | title         |
+        | Venda na Amazon | Vender         |
+        | Prime           | Prime         |
+        | Mais Vendidos   | Mais Vendidos |

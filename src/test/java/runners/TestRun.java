@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
         features = "src/test/resources/features",
         glue = "stepDefinitions",
         plugin = {"pretty", "html:target/cucumber-reports.html"},
-        tags = "@All",  // Adicione aqui a tag que deseja executar
+        tags = "@All3",  // Adicione aqui a tag que deseja executar
         snippets = CucumberOptions.SnippetType.CAMELCASE
 )
 public class TestRun {}

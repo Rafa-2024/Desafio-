@@ -6,7 +6,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 import pages.MainPage;
-import sun.jvm.hotspot.utilities.Assert;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -18,7 +17,9 @@ public class MainStepDefinitions {
 
     @When("clicar no menu de opções referente a caixa de texto 'Pesquisa Amazon.com.br'")
     public void clicarNoMenuDeOpcoesReferenteACaixaDeTexto() {
-        mainPage.clickNameOnOptionButton("url", 8);
+      //  mainPage.clickNameOnOptionButton("url", 20);
+        mainPage.clickAtOffsetPage();
+
     }
     @Then("a lista de opções deve estar em ordem alfabética")
     public void aListaDeOpcoesDeveEstarEmOrdemAlfabetica() {
@@ -27,11 +28,13 @@ public class MainStepDefinitions {
 
     @Given("clicado no menu de opções da caixa de pesquisa")
     public void clicadoNoMenuDeOpcoesDaCaixaDePesquisa() {
-        mainPage.clickNameOnOptionButton("url", 8);
+       // mainPage.clickNameOnOptionButton("url", 20);
+
+        mainPage.clickAtOffsetPage();
     }
     @Given("for selecionada a opção {string} no menu de opções da caixa de pesquisa")
     public void forSelecionadaAOpcaoNoMenuDeOpcoesDaCaixaDePesquisa(String string) {
-        // Write code here that turns the phrase above into concrete actions
+        mainPage.clickOnElementUsingJS("//select[@name='url']/option[contains(.,'Games')]");
     }
     @When("preencher {string} na caixa de pesquisa")
     public void preencherNaCaixaDePesquisa(String text) {
@@ -39,11 +42,12 @@ public class MainStepDefinitions {
     }
     @Then("a lista de opções de autocomplete deve aparecer {string}")
     public void aListaDeOpcoesDeAutocompleteDeveAparecer(String option) {
-        assertThat("O texto "+option+" não foi encontrado na lista de autocomplete", mainPage.verifyAutoCompletedListFromSearcher(option), is(true)); ;
+        assertThat("O texto "+option+" não foi encontrado na lista de autocomplete", mainPage.verifyAutoCompletedListFromSearcher(option), is(true));
     }
 
     @Then("o autocomplete não deve ser apresentar a opção {string}")
-    public void oAutocompleteNãoDeveSerApresentarAOpção(String option) {
+    public void oAutocompleteNãoDeveSerApresentarAOpção(String option) throws InterruptedException {
+        Thread.sleep(3000);
         assertThat("O texto "+option+" não foi encontrado na lista de autocomplete", mainPage.verifyAutoCompletedListFromSearcher(option), is(false)); ;
     }
     
@@ -52,17 +56,26 @@ public class MainStepDefinitions {
         // Write code here that turns the phrase above into concrete actions
     }
 
-    @When("clicar em {string}")
-    public void clicarEm(String arg0) {
-        
+    @When("clicar em link {string}")
+    public void clicarEm(String link) {
+        mainPage.clickOnLinkInMenuHeader(link);
     }
 
-    @Then("validar que a página {string}")
-    public void validarQueAPágina(String arg0) {
+    @Then("validar que a página {string} carregou corretamente")
+    public void validarQueAPágina(String title) {
+
+
+        assert mainPage.validateElement(title):"A página não carregou corretamente";
+
     }
 
     @Given("o site {string} foi acessado")
     public void oSiteFoiAcessado(String url) {
         driver.get(url);
+        driver.navigate().refresh();
+    }
+
+    @When("teste")
+    public void teste() {
     }
 }
