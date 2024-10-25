@@ -48,7 +48,6 @@ public class MainStepDefinitions {
 
     @Then("o autocomplete não deve ser apresentar a opção {string}")
     public void oAutocompleteNãoDeveSerApresentarAOpção(String option) throws InterruptedException {
-        Thread.sleep(3000);
         assertThat("O texto "+option+" não foi encontrado na lista de autocomplete", mainPage.verifyAutoCompletedListFromSearcher(option), is(false)); ;
     }
     

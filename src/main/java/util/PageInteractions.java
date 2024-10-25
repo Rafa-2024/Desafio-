@@ -3,6 +3,7 @@ package util;
 import drivers.DriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.Select;
@@ -89,8 +90,13 @@ public class PageInteractions {
         return false;
     }
 
-    public static void clickAtOffset(WebElement dropdownElement, int offsetX, int offsetY) {
+    public static void clickAtOffset(String dropdown, int offsetX, int offsetY) {
         // Cria uma instância de Actions para realizar o clique
+
+        WebElement dropdownElement = driver.findElement(By.xpath(dropdown));
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.invisibilityOf(dropdownElement));
         Actions actions = new Actions(driver);
 
         // Calcula a posição do elemento
@@ -98,8 +104,32 @@ public class PageInteractions {
         int y = dropdownElement.getLocation().getY() + offsetY; // Posição Y do elemento
 
         // Move o mouse até a posição calculada e clica
-        actions.moveByOffset(x, y).click().perform();
-    }
+        boolean success = false;
+        int attempts = 0;
+
+        while (!success && attempts < 3) {
+            try {
+                // Atualiza a página e espera que o dropdown esteja visível
+//                driver.navigate().refresh();
+//                wait.until(ExpectedConditions.visibilityOf(dropdownElement));
+
+                // Tenta clicar no elemento
+                actions.moveByOffset(x, y).click().perform();
+                success = true; // Se não ocorrer uma exceção, a ação foi bem-sucedida
+            } catch (StaleElementReferenceException e) {
+                // Captura StaleElementReferenceException e tenta novamente
+                dropdownElement = driver.findElement(By.xpath(dropdown)); // Altere para o seletor correto
+                attempts++; // Incrementa o número de tentativas
+            } catch (MoveTargetOutOfBoundsException e) {
+                // Captura MoveTargetOutOfBoundsException e tenta novamente
+                dropdownElement = driver.findElement(By.xpath(dropdown)); // Altere para o seletor correto
+                attempts++; // Incrementa o número de tentativas
+            }
+
+            // Aguarda novamente a visibilidade do dropdown após as exceções
+         //   wait.until(ExpectedConditions.visibilityOf(dropdownElement));
+        }
 
 
-}
+    }}
+

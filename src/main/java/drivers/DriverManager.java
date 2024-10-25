@@ -16,7 +16,12 @@ public class DriverManager {
             // Configurações do Chrome
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--start-maximized"); // Opção para iniciar maximizado
-            // options.addArguments("--headless"); // Descomente para rodar em modo headless
+        //    options.addArguments("--headless"); // Descomente para rodar em modo headless
+            options.addArguments("--disable-gpu");
+            options.addArguments("--disable-infobars");
+            options.addArguments("--start-maximized");
+            options.addArguments("--disable-application-cache");
+            options.addArguments("--disable-popup-blocking");
 
             driver = new ChromeDriver(options);
         }

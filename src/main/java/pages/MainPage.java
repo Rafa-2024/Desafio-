@@ -1,14 +1,12 @@
 package pages;
 
 import drivers.DriverManager;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.MoveTargetOutOfBoundsException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import util.js.ScriptExecutor;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import util.PageInteractions;
@@ -26,6 +24,7 @@ public class MainPage {
 
     @FindBy(xpath = "//select[@name='url']")
     WebElement dropdownFromSearchList;
+
 
     @FindBy(xpath = "//input[@id='twotabsearchtextbox']")
     WebElement searchBoxFromHeader;
@@ -45,7 +44,8 @@ public class MainPage {
 
     public void clickAtOffsetPage() {
       //  PageInteractions.clickOnElement(driver.findElement(By.xpath("//select[@name='"+name+"']")), timeoutInSecond);
-        PageInteractions.clickAtOffset(dropdownFromSearchList, 2, 20);
+
+       PageInteractions.clickAtOffset("//select[@name='url']", 2, 20);
     }
 
     public void expandDropdownList(){
@@ -76,7 +76,21 @@ public class MainPage {
 
     public boolean verifyAutoCompletedListFromSearcher(String completedText) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        wait.until(ExpectedConditions.visibilityOfAllElements(listFromSearchingBox));
+
+        // Move o mouse até a posição calculada e clica
+        boolean success = false;
+        int attempts = 0;
+
+        while (!success && attempts < 3) {
+            try {
+                wait.until(ExpectedConditions.visibilityOfAllElements(listFromSearchingBox));
+                attempts++;
+            } catch (StaleElementReferenceException e) {
+                listFromSearchingBox = driver.findElements(By.xpath("//*[contains(@class, 'autocomplete-results-container')]//div[@role='button']"));
+                attempts++;
+            }
+        }
+
         return PageInteractions.isTextPresentInElements(listFromSearchingBox, completedText);
     }
 
