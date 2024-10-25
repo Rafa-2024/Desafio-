@@ -1,4 +1,4 @@
-@All3
+@All
 Feature: Menu de navegação
   da página principal do site da Amazon
 
@@ -9,6 +9,7 @@ Feature: Menu de navegação
   Scenario: Desativar captcha
     When teste
 
+    @teste2
     Scenario Outline: Validar que a página "<link>" é aberta ao clicar na opção correspondente
       When clicar em link "<link>"
       Then validar que a página "<title>" carregou corretamente

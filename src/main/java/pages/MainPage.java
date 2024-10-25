@@ -82,9 +82,9 @@ public class MainPage {
 
     public void clickOnElementUsingJS(String option) {
 
-     //   ScriptExecutor.clickUsingJavaScript(driver.findElement(By.xpath(option)));
-
-        ScriptExecutor. clickOnAListUsingScroll(optionsFromSearchList, "Games");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfAllElements(optionsFromSearchList));
+        ScriptExecutor.clickOnAListUsingScroll(optionsFromSearchList, option);
 
     }
 

@@ -33,8 +33,9 @@ public class MainStepDefinitions {
         mainPage.clickAtOffsetPage();
     }
     @Given("for selecionada a opção {string} no menu de opções da caixa de pesquisa")
-    public void forSelecionadaAOpcaoNoMenuDeOpcoesDaCaixaDePesquisa(String string) {
-        mainPage.clickOnElementUsingJS("//select[@name='url']/option[contains(.,'Games')]");
+    public void forSelecionadaAOpcaoNoMenuDeOpcoesDaCaixaDePesquisa(String departament) {
+
+        mainPage.clickOnElementUsingJS(departament);
     }
     @When("preencher {string} na caixa de pesquisa")
     public void preencherNaCaixaDePesquisa(String text) {
